@@ -10,6 +10,12 @@ const repoSection = document.querySelector(".repos");
 // section for individual repo data
 const repoDataSection = document.querySelector(".repo-data");
 
+// back to repo gallery button
+const backToGallery = document.querySelector(".view-repos");
+
+// search input
+const filterInput = document.querySelector(".filter-repos");
+
 //github username
 const username = "AirelleM";
 
@@ -51,6 +57,9 @@ const getRepos = async function () {
 };
 
 const displayRepos = function (repos) {
+      // show the search box
+  filterInput.classList.remove("hide");
+
   repos.forEach(function (repo) {
     const repoItem = document.createElement("li");
     repoItem.classList.add("repo");
@@ -105,7 +114,35 @@ const displayRepoInfo = function (repoInfo, languages) {
   // show the repo-data section, hide the repos list
   repoDataSection.classList.remove("hide");
   repoSection.classList.add("hide");
+
+    // show the back button
+  backToGallery.classList.remove("hide");
 };
 
+backToGallery.addEventListener("click", function () {
+  // show the list of repos again
+  repoSection.classList.remove("hide");
+
+  // hide the individual repo details
+  repoDataSection.classList.add("hide");
+
+  // hide the back button itself
+  backToGallery.classList.add("hide");
+});
+filterInput.addEventListener("input", function (e) {
+  const searchText = e.target.value;
+  const repos = document.querySelectorAll(".repo");
+  const lowerSearchText = searchText.toLowerCase();
+
+  repos.forEach(function (repo) {
+    const lowerRepoText = repo.innerText.toLowerCase();
+
+    if (lowerRepoText.includes(lowerSearchText)) {
+      repo.classList.remove("hide");
+    } else {
+      repo.classList.add("hide");
+    }
+  });
+});
 getGitHubUser();
 
